@@ -224,5 +224,39 @@
   document.querySelectorAll('[data-ai]').forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); root.classList.contains('open') ? close() : open(); }); });
   root.querySelector('.ai-x').addEventListener('click', close);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && root.classList.contains('open')) close(); });
+
+  /* ---------- gentle nudge after 30 s (once per visit, never intrusive) ---------- */
+  (function nudge() {
+    var NK = 'mx-ai-nudge', DELAY = 30000, SHOW = 12000;
+    try { if (sessionStorage.getItem(NK) || sessionStorage.getItem(KEY)) return; } catch (e) {}
+    if (!launcher) return;
+    var bubble = document.createElement('div');
+    bubble.className = 'ai-nudge'; bubble.setAttribute('role', 'status');
+    bubble.innerHTML = '<button type="button" class="ai-nudge-msg">Besoin d’aide ? Je réponds à vos questions sur Massonelec.</button><button type="button" class="ai-nudge-x" aria-label="Masquer">×</button>';
+    document.body.appendChild(bubble);
+    var shown = false, hideT = 0, waited = 0, lastTick = Date.now(), lastInput = 0;
+    ['keydown', 'input'].forEach(function (ev) { document.addEventListener(ev, function () { lastInput = Date.now(); }, true); });
+    function done() { try { sessionStorage.setItem(NK, '1'); } catch (e) {} }
+    function hide() { bubble.classList.remove('on'); clearTimeout(hideT); }
+    function busy() {
+      var a = document.activeElement, tag = a && a.tagName;
+      return document.hidden || root.classList.contains('open') || document.body.classList.contains('menu-open') ||
+        (document.getElementById('lightbox') && document.getElementById('lightbox').classList.contains('open')) ||
+        (document.querySelector('.wa-panel') && document.querySelector('.wa-panel').classList.contains('open')) ||
+        tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || Date.now() - lastInput < 4000;
+    }
+    var iv = setInterval(function () {
+      var now = Date.now(), dt = now - lastTick; lastTick = now;
+      if (!document.hidden) waited += dt;            // only count time the page is actually visible
+      if (waited < DELAY || shown || busy()) return;
+      shown = true; clearInterval(iv); done();
+      bubble.classList.add('on');
+      hideT = setTimeout(hide, SHOW);
+    }, 1000);
+    bubble.querySelector('.ai-nudge-msg').addEventListener('click', function () { hide(); open(); });
+    bubble.querySelector('.ai-nudge-x').addEventListener('click', hide);
+    launcher.addEventListener('click', function () { hide(); done(); clearInterval(iv); });
+    window.addEventListener('scroll', function () { if (bubble.classList.contains('on') && Date.now() - lastTick > 0) { /* keep */ } }, { passive: true });
+  })();
   window.__ai = { ask: ask, open: open, answer: answer };
 })();

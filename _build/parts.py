@@ -6,7 +6,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = json.load(open(os.path.join(ROOT, '_build', 'imgmeta.json')))
 META['scanner-poster'] = [1600, 900]
-V = '52'
+V = '53'
 
 CO = dict(
     name='Massonelec Sàrl', phone='079 350 55 19', tel='+41793505519', wa='41793505519',

@@ -779,3 +779,13 @@ p{margin:0 0 1em}
 @media (max-width:560px){.cert-grid{grid-template-columns:1fr}.cert{padding:26px 20px}.cert .seal{width:60px;height:60px;margin-bottom:20px}}
 .hero-foot .cert-badges{margin:0 0 22px}
 .cartouche{bottom:40px;right:calc(var(--pad) + 190px)}
+
+/* assistant nudge */
+.ai-nudge{position:fixed;right:22px;bottom:146px;z-index:149;display:flex;align-items:flex-start;gap:2px;max-width:260px;background:var(--ink);color:#fff;padding:4px 4px 4px 0;box-shadow:0 14px 34px rgba(0,0,0,.2);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s}
+.ai-nudge.on{opacity:1;visibility:visible;transform:none}
+.ai-nudge::after{content:"";position:absolute;right:26px;bottom:-6px;width:12px;height:12px;background:var(--ink);transform:rotate(45deg)}
+.ai-nudge-msg{flex:1;border:0;background:none;color:inherit;text-align:left;font-size:.86rem;line-height:1.4;padding:10px 6px 10px 14px;cursor:pointer}
+.ai-nudge-msg:hover{color:#5fd0f5}
+.ai-nudge-x{flex:none;width:26px;height:26px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:15px;line-height:1}
+.ai-nudge-x:hover{background:#fff;color:var(--ink)}
+@media (max-width:640px){.ai-nudge{right:12px;bottom:146px;max-width:230px}.ai-nudge::after{right:18px}}
