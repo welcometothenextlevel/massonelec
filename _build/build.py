@@ -74,14 +74,8 @@ home = f'''
         <div class="hero-ctas" data-r=".1">{btn('devis', 'Demander un devis')}{ulink('tel:' + CO['tel'], 'Urgence 24/7 — ' + CO['phone'])}</div>
       </div>
       <div class="ring" id="ring" aria-hidden="true"></div>
-      <div class="hero-seq" aria-hidden="true"><ol>
-        <li><span class="mono">01 / 03 — Étude</span><b>Calculer l’alimentation.</b><p>Chaque équipement a ses exigences : puissance, protections, transformateur dédié.</p></li>
-        <li><span class="mono">02 / 03 — Installation</span><b>Raccorder le statif.</b><p>Câblage, armoires et raccordement, en coordination avec le fabricant.</p></li>
-        <li><span class="mono">03 / 03 — Mise en service</span><b>Contrôler, puis allumer.</b><p>Mesures, contrôle OIBT et rapport de conformité avant la mise sous tension.</p></li>
-      </ol></div>
     </div>
   </div>
-  <div class="hero-prog"><i></i></div>
   <div class="cartouche" data-r=".2"><div><span>Entreprise</span><span>Massonelec Sàrl</span></div><div><span>Siège</span><span>{CO['street']}, {CO['npa']} {CO['city']}</span></div><div><span>IDE</span><span>{CO['ide']}</span></div><div><span>Document</span><span>Accueil · rév. 2026</span></div></div>
   <div class="scroll-hint"><i></i>Défiler</div>
 </section>

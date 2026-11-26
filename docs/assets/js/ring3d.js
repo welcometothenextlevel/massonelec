@@ -142,18 +142,18 @@ function init() {
   const v3 = new THREE.Vector3(), A = new THREE.Vector3(), B = new THREE.Vector3();
   function frame(now) {
     const t = Math.max(0, (now - t0) / 1000);
-    const target = typeof window.__heroP === 'number' ? window.__heroP : 0;
+    const hr = box.getBoundingClientRect(); const target = clamp(-hr.top / Math.max(1, hr.height));
     p += (target - p) * .09;
     vel += (Math.abs(p - lastP) * 60 - vel) * .1; lastP = p;
     mx += (tx - mx) * .05; my += (ty - my) * .05;
     const ie = ease(intro), mob = mobile();
 
-    const ex = ease(seg(p, .12, .55)) * (1 - .35 * ease(seg(p, .9, 1)));       // explode amount
-    const turn = ease(seg(p, 0, .6));
+    const ex = .1 * ie + ease(seg(p, 0, .8)) * .28;       // gentle opening
+    const turn = ease(seg(p, 0, 1)) * .35;
     G.rotation.y = -0.55 - turn * .62 + (1 - ie) * -.7 + mx * .35 + (reduce ? 0 : Math.sin(t * .35) * .04);
     G.rotation.x = .08 + my * .1 - turn * .04;
     G.position.y = -.1 - (1 - ie) * .9 + (reduce ? 0 : Math.sin(t * .8) * .04);
-    G.position.x = mob ? -ex * .5 : -.9 * turn - ex * .5;
+    G.position.x = 0;
     G.scale.setScalar(.86 + ie * .14);
 
     cover.position.z = .15 * ie + ex * 3.4; cover.position.y = ex * .25; cover.rotation.y = ex * .22; cover.rotation.x = -ex * .05;
@@ -161,18 +161,18 @@ function init() {
     drum.position.z = ex * .55;
     couch.position.z = (1 - ie) * 1.5 + ex * 1.6;
     cab.position.x = 3.9 + (1 - ie) * 2 - ex * .2;
-    drum.rotation.z = reduce ? 0 : drum.rotation.z - (0.012 + ex * 0.09 + vel * .4);
+    drum.rotation.z = reduce ? 0 : drum.rotation.z - .008;
 
     // current & x-ray
-    const live = seg(p, .4, .62);
+    const live = 0;
     const beam = live * (0.55 + 0.45 * Math.random());
     fan.material.opacity = beam * .28;
     detArc.material.opacity = .6 + live * .4;
-    blueLight.intensity = live * 6 + ex * 2;
-    ledHalo.material.opacity = .18 + live * .35 + Math.sin(t * 4) * .04;
+    blueLight.intensity = 0;
+    ledHalo.material.opacity = .16 + (reduce ? 0 : Math.sin(t * 1.6) * .05);
     const pp = pulses.geometry.attributes.position;
     for (let i = 0; i < pulseN; i++) { const u = (((t * .55 + i / pulseN) % 1) + 1) % 1; cableCurve.getPoint(u, v3); pp.setXYZ(i, v3.x, v3.y + .04, v3.z); }
-    pp.needsUpdate = true; pulses.material.opacity = Math.max(.15 * ie, live);
+    pp.needsUpdate = true; pulses.material.opacity = .55 * ie;
     if (now - lastZap > 70) {
       lastZap = now;
       A.set(-.5, .3, .45).add(cab.position); B.set(1.9, -1.2, -.3).add(back.position);
@@ -184,14 +184,14 @@ function init() {
     const flick = Math.random() > .25 ? 1 : .3;
     arcs[0].material.opacity = live * .95 * flick; arcs[1].material.opacity = live * .6 * flick; arcs[2].material.opacity = live * ex * .7 * flick;
 
-    camera.position.set(mob ? 0 : .3, 1.5 - turn * .3, (mob ? 22 : 18.5) - turn * 1.2 + ex * 2.2);
+    camera.position.set(mob ? 0 : .3, 1.5, mob ? 14.5 : 18.5);
     camera.lookAt(mob ? .3 : 0, -.45, 0);
     renderer.render(scene, camera);
 
     anchors.forEach(a => {
       a.obj.updateMatrixWorld(); v3.copy(a.v).applyMatrix4(a.obj.matrixWorld).project(camera);
       a.el.style.left = ((v3.x + 1) / 2 * w).toFixed(1) + 'px'; a.el.style.top = ((1 - v3.y) / 2 * h - 5).toFixed(1) + 'px';
-      a.el.classList.toggle('on', ie > .95 && p >= a.a && p < a.b);
+      a.el.classList.remove('on');
     });
   }
   let raf = 0;

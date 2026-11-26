@@ -419,29 +419,6 @@
   var mm = G.matchMedia();
 
 
-  var hero = $('.hero');
-  window.__heroP = 0;
-  if (hero && $('#ring')) {
-    var seq = $$('.hero-seq li', hero), hfoot = $('.hero-foot', hero), hh1 = $('h1', hero), hmeta = $$('.cartouche, .scroll-hint, .hero-meta', hero), hbar = $('.hero-prog i', hero), hprog = $('.hero-prog', hero);
-    mm.add({ d: '(min-width: 901px)', m: '(max-width: 900px)' }, function (c) {
-      var len = c.conditions.d ? '+=170%' : '+=130%';
-      G.set(seq, { autoAlpha: 0, y: 30 });
-      var tl = G.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: len, pin: true, scrub: .6, anticipatePin: 1,
-        onUpdate: function (s) { window.__heroP = s.progress; if (hbar) hbar.style.transform = 'scaleX(' + s.progress + ')'; } } });
-      tl.to(hfoot, { autoAlpha: 0, y: -30, duration: .12 }, .02)
-        .to(hmeta, { autoAlpha: 0, duration: .08 }, .02)
-        .to(hh1, { yPercent: -18, autoAlpha: 0, duration: .16 }, .06)
-        .to(hprog, { opacity: 1, duration: .05 }, .1);
-      var slots = [[.18, .38], [.43, .63], [.68, .97]];
-      seq.forEach(function (li, i) {
-        tl.to(li, { autoAlpha: 1, y: 0, duration: .04 }, slots[i][0]);
-        if (i < seq.length - 1) tl.to(li, { autoAlpha: 0, y: -24, duration: .03 }, slots[i][1]);
-      });
-      tl.to({}, { duration: .03 }, .97);
-      return function () { window.__heroP = 0; };
-    });
-  }
-
   var film = $('.film');
   if (film) {
     var frame = $('.film-frame', film), fv = $('video', frame), cap = $('.film-cap', film), ftop = $('.film-top', film);
