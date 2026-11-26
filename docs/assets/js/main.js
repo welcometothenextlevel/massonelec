@@ -63,7 +63,7 @@
   function closeMenu() {
     if (!menu || !menu.classList.contains('open')) return;
     var done = function () { menu.classList.remove('open'); menu.setAttribute('aria-hidden', 'true'); document.body.classList.remove('menu-open'); if (lenis) lenis.start(); };
-    if (G && !reduce) G.to(menu, { clipPath: 'inset(100% 0% 0% 0%)', duration: .7, ease: 'expo.inOut', onComplete: done }); else done();
+    if (G && !reduce) G.fromTo(menu, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(100% 0% 0% 0%)', duration: .7, ease: 'expo.inOut', onComplete: done }); else done();
   }
   $$('[data-menu]').forEach(function (b) { b.addEventListener('click', openMenu); });
   $$('.menu-close').forEach(function (b) { b.addEventListener('click', closeMenu); });
@@ -330,9 +330,9 @@
   if (film) {
     var frame = $('.film-frame', film), fv = $('video', frame), cap = $('.film-cap', film), ftop = $('.film-top', film);
     mm.add('(min-width: 641px)', function () {
-      G.set(frame, { clipPath: 'inset(17% 24% 17% 24%)' }); G.set(fv, { scale: 1.22 }); G.set(cap, { autoAlpha: 0, y: 40 });
+      G.set(fv, { scale: 1.22 }); G.set(cap, { autoAlpha: 0, y: 40 });
       var tl = G.timeline({ scrollTrigger: { trigger: film, start: 'top top', end: '+=150%', scrub: .9, pin: '.film-stage', anticipatePin: 1 } });
-      tl.to(frame, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', duration: 1 })
+      tl.fromTo(frame, { clipPath: 'inset(17% 24% 17% 24%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', duration: 1, immediateRender: true })
         .to(fv, { scale: 1, ease: 'none', duration: 1 }, 0)
         .to(ftop, { autoAlpha: 0, duration: .3 }, .1)
         .to(cap, { autoAlpha: 1, y: 0, duration: .3, ease: 'power2.out' }, .72);

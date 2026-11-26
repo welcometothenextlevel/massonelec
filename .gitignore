@@ -3,3 +3,5 @@ _src/
 _old/
 _crops/
 __pycache__/
+_stock/
+_build/*.bak
