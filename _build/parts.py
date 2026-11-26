@@ -6,7 +6,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = json.load(open(os.path.join(ROOT, '_build', 'imgmeta.json')))
 META['scanner-poster'] = [1600, 900]
-V = '22'
+V = '31'
 
 CO = dict(
     name='Massonelec Sàrl', phone='079 350 55 19', tel='+41793505519', wa='41793505519',
@@ -37,6 +37,8 @@ _I = {
  'volume': '<path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
  'star': '<path fill="currentColor" stroke="none" d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
  'play': '<path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/>',
+ 'spark': '<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="2.5"/>',
+ 'send': '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
 }
 _B = {
  'wa': '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></svg>',
@@ -180,6 +182,17 @@ def wa_widget():
   <a class="q" href="devis">Devis gratuit</a>
 </nav>'''
 
+
+def ai_widget():
+    return f'''<button class="ai-launch" data-ai aria-controls="ai" aria-expanded="false" aria-label="Poser une question à l’assistant"><span class="ic">{ic('spark')}</span><span>Une question ?</span></button>
+<section class="ai" id="ai" aria-hidden="true" role="dialog" aria-label="Assistant Massonelec">
+  <div class="ai-head">{mark()}<span><b>Assistant Massonelec</b><small><span class="dot"></span>Répond instantanément</small></span><button class="ai-x" aria-label="Fermer l’assistant">{ic('x')}</button></div>
+  <div class="ai-log" aria-live="polite"></div>
+  <div class="ai-chips"></div>
+  <form class="ai-form" autocomplete="off"><input type="text" name="q" placeholder="Votre question sur Massonelec…" aria-label="Votre question" maxlength="300"><button type="submit" aria-label="Envoyer">{ic('send')}</button></form>
+  <p class="ai-note">Assistant virtuel · réponses basées sur les informations publiques de Massonelec Sàrl</p>
+</section>'''
+
 # ---------------------------------------------------------------- blocks
 def lines_h(tag, cls, parts):
     return f'<{tag} class="{cls}" data-lines>' + ''.join(f'<span class="ln"><span>{p}</span></span>' for p in parts) + f'</{tag}>'
@@ -280,6 +293,19 @@ def phero_img(name, alt):
 def next_link(href, title, num='Page suivante'):
     return f'<a class="next wrap" href="{href}" style="display:block"><span class="mono">{num}</span><span class="d2">{title}{ic("arrow")}</span></a>'
 
+
+def carousel(rows, title='Sur nos chantiers.', num='—', name='En images', dark=False):
+    out = f'<section class="mq{" dark" if dark else ""}"{" data-dark" if dark else ""}><div class="wrap">{sec_top(num, name, title, h2cls="d3")}</div>'
+    for r, (direction, speed, items) in enumerate(rows):
+        cells = ''
+        for dup in (False, True):
+            for n, cap in items:
+                d = ' data-dup aria-hidden="true" tabindex="-1"' if dup else ''
+                cells += f'<button class="mq-item" data-lb data-full="assets/img/{n}.webp" data-caption="{esc(cap)}"{d}>{img(n, cap, "(max-width:900px) 60vw, 30vw")}<span>{cap}</span></button>'
+        out += f'<div class="mq-row{" b" if r else ""}" data-dir="{direction}" data-speed="{speed}"><div class="mq-track">{cells}</div></div>'
+    out += f'<div class="wrap"><div class="mq-hint"><span>Glissez pour parcourir · cliquez pour agrandir</span><a class="ulink" href="realisations">Toutes les réalisations{ic("ne")}</a></div></div></section>'
+    return out
+
 def lightbox():
     return f'<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Agrandissement"><button class="x" aria-label="Fermer">{ic("x")}</button><button class="p" aria-label="Précédent">{ic("chevl")}</button><figure></figure><button class="n" aria-label="Suivant">{ic("chevr")}</button></div>'
 
@@ -326,6 +352,7 @@ def page(slug, title, desc, body, active=None, extra_head='', extra_body='', bas
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:image" content="{CO['site']}assets/img/og.jpg"><meta property="og:url" content="{canon}">
 <link rel="icon" href="assets/img/logo-m.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <script>document.documentElement.classList.add('pre-intro')</script>
+<script type="importmap">{{"imports":{{"three":"./assets/vendor/three.module.min.js"}}}}</script>
 {FONTS}
 <link rel="stylesheet" href="assets/css/site.css?v={V}">
 {schema() if slug in ('index', 'contact', 'entreprise') else ''}{extra_head}
@@ -339,11 +366,13 @@ def page(slug, title, desc, body, active=None, extra_head='', extra_body='', bas
 </main>
 {footer()}
 {wa_widget()}
+{ai_widget()}
 <div class="idx-float" aria-hidden="true"><img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></div>
 <script src="assets/vendor/gsap.min.js?v={V}"></script>
 <script src="assets/vendor/ScrollTrigger.min.js?v={V}"></script>
 <script src="assets/vendor/lenis.min.js?v={V}"></script>
 <script src="assets/js/main.js?v={V}"></script>
+<script src="assets/js/assistant.js?v={V}" defer></script>
 {extra_body}
 </body>
 </html>'''

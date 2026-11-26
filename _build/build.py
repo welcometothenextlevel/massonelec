@@ -59,6 +59,8 @@ FIGS = [
 ]
 figs = ''.join(f'''<a class="fig" href="{h}" data-r>{frame(im, t, "r-45", px=False, sizes="(max-width:900px) 100vw, 33vw")}<h3>{t}</h3><p>{d}</p></a>''' for im, t, d, h in FIGS)
 
+WORK_A = [('station-pompage-salle', 'Station de pompage · eau potable'), ('tableau-domotique', 'Tableau domotique'), ('generatrice-88kva', 'Génératrice 88 kVA'), ('plafond-led-violet', 'Plafond LED couleur'), ('imagerie-transformateur', 'Transformateur · mammographe'), ('eclairage-jardin', 'Mise en lumière de jardin'), ('armoire-industrielle', 'Armoire industrielle'), ('miroir-retroeclaire', 'Miroir rétroéclairé'), ('coffrets-comptage', 'Coffrets de comptage'), ('vitrine-led', 'Vitrine lumineuse')]
+WORK_B = [('station-pompage-armoire', 'Armoire de commande'), ('salon-eclairage', 'Salon éclairé'), ('cablage-armoire', 'Câblage d’armoire'), ('enseigne-led-gravee', 'Enseigne gravée LED'), ('baie-reseau', 'Baie réseau'), ('plafond-led-blanc', 'Gorges lumineuses'), ('moteur-industriel', 'Moteur industriel'), ('bibliotheque-led', 'Bibliothèque LED'), ('proto-lift-projecteur', 'Lift de projecteur'), ('salle-de-bain-baignoire', 'Salle de bain'), ('plan-electrique-2', 'Plan d’installation'), ('tableau-distribution', 'Tableau de distribution')]
 TOWNS = [('Aigle', 'siège'), ('Yvorne', 'Chablais'), ('Ollon', 'Chablais'), ('Bex', 'Chablais'), ('Villeneuve', 'Riviera'), ('Montreux', 'Riviera'), ('Vevey', 'Riviera'), ('Leysin', 'Alpes vaudoises'), ('Villars', 'Alpes vaudoises'), ('Les Diablerets', 'Alpes vaudoises'), ('Château-d’Œx', 'Pays-d’Enhaut'), ('Châtel-St-Denis', 'Veveyse'), ('Bulle', 'Gruyère'), ('Et environs', 'sur demande')]
 
 home = f'''
@@ -72,8 +74,14 @@ home = f'''
         <div class="hero-ctas" data-r=".1">{btn('devis', 'Demander un devis')}{ulink('tel:' + CO['tel'], 'Urgence 24/7 — ' + CO['phone'])}</div>
       </div>
       <div class="ring" id="ring" aria-hidden="true"></div>
+      <div class="hero-seq" aria-hidden="true"><ol>
+        <li><span class="mono">01 / 03 — Étude</span><b>Calculer l’alimentation.</b><p>Chaque équipement a ses exigences : puissance, protections, transformateur dédié.</p></li>
+        <li><span class="mono">02 / 03 — Installation</span><b>Raccorder le statif.</b><p>Câblage, armoires et raccordement, en coordination avec le fabricant.</p></li>
+        <li><span class="mono">03 / 03 — Mise en service</span><b>Contrôler, puis allumer.</b><p>Mesures, contrôle OIBT et rapport de conformité avant la mise sous tension.</p></li>
+      </ol></div>
     </div>
   </div>
+  <div class="hero-prog"><i></i></div>
   <div class="cartouche" data-r=".2"><div><span>Entreprise</span><span>Massonelec Sàrl</span></div><div><span>Siège</span><span>{CO['street']}, {CO['npa']} {CO['city']}</span></div><div><span>IDE</span><span>{CO['ide']}</span></div><div><span>Document</span><span>Accueil · rév. 2026</span></div></div>
   <div class="scroll-hint"><i></i>Défiler</div>
 </section>
@@ -96,7 +104,9 @@ home = f'''
     <div style="margin-top:30px">{ulink('entreprise', 'Découvrir l’entreprise')}</div></div>
 </div></div></section>
 
-<section class="sec" style="padding-top:0"><div class="wrap">
+{carousel([('l', 34, WORK_A), ('r', 26, WORK_B)], 'Sur nos chantiers.', '—', 'Réalisations Massonelec')}
+
+<section class="sec"><div class="wrap">
   {sec_top('02', 'Prestations', 'Huit métiers, une seule exigence.', act=ulink('prestations', 'Toutes les prestations'))}
   {idx_list(ALL_SVC)}
 </div></section>
@@ -152,6 +162,7 @@ home = f'''
 
 {faq_section(FAQ, '09')}
 {contact_block(subject='Demande depuis la page d’accueil', idp='home', num='10')}
+{lightbox()}
 '''
 add('index', 'Massonelec Sàrl · Électricien à Aigle · Courant fort, faible & imagerie médicale',
     'Installateur-électricien CFC à Aigle depuis 2000. Électricité générale, courant fort et industriel, imagerie médicale, domotique, dépannage 24/7 dans le Chablais vaudois jusqu’à Bulle. Devis gratuit.',
@@ -353,6 +364,7 @@ G = [('scanner-poster', 'sante', 'Scanner · Centre d’imagerie d’Aigle (vid�
 FIL = [('all', 'Tout'), ('sante', 'Santé'), ('industrie', 'Industrie & énergie'), ('tableaux', 'Tableaux'), ('eclairage', 'Éclairage'), ('habitat', 'Habitat'), ('reseaux', 'Réseaux'), ('etudes', 'Études'), ('proto', 'Prototypes')]
 rea = phero('<a href="./">Accueil</a> / Réalisations', f'{len(CASES)} références · {len(G)} documents', ['Réalisations.'],
             '<p>Santé, infrastructures, énergie, habitat, éclairage et prototypes : un aperçu concret du savoir-faire Massonelec, photographié sur nos chantiers.</p>' + btn('devis', 'Un projet similaire ?'), phero_img('station-pompage-salle', 'Station de pompage d’eau potable'))
+rea += carousel([('l', 34, WORK_A), ('r', 26, WORK_B)], 'En mouvement.', '—', 'Défilé de chantiers')
 rea += f'<section class="sec"><div class="wrap">{sec_top("01", "Références", "Chantiers marquants.", h2cls="d3")}{cases}</div></section>'
 rea += f'''<section class="sec white" id="galerie"><div class="wrap">{sec_top('02', 'Galerie', 'Photos de chantier.', h2cls='d3', side=f'{len(G)} photos et vidéos de nos interventions. Cliquez pour agrandir.')}
 <div class="filters" role="group" aria-label="Filtrer la galerie">{''.join(f'<button type="button" data-filter="{k}" aria-pressed="{str(k == "all").lower()}">{l}</button>' for k, l in FIL)}</div>
