@@ -70,6 +70,7 @@ home = f'''
     <div class="hero-body">
       {lines_h('h1', 'd1', ['Courant fort.', 'Courant faible.', 'Imagerie médicale.'])}
       <div class="hero-foot">
+        {cert_badges()}
         <p class="lead" data-r>Massonelec Sàrl étudie, installe, contrôle et dépanne les réseaux électriques des particuliers, des industries et des centres médicaux — du Chablais vaudois jusqu’à Bulle.</p>
         <div class="hero-ctas" data-r=".1">{btn('devis', 'Demander un devis')}{ulink('tel:' + CO['tel'], 'Urgence 24/7 — ' + CO['phone'])}</div>
       </div>
@@ -97,6 +98,8 @@ home = f'''
     <div class="sig">{mark()}<div><b>{CO['boss']}</b><span>Gérant</span></div></div>
     <div style="margin-top:30px">{ulink('entreprise', 'Découvrir l’entreprise')}</div></div>
 </div></div></section>
+
+{cert_block('—')}
 
 {carousel([('l', 34, WORK_A), ('r', 26, WORK_B)], 'Sur nos chantiers.', '—', 'Réalisations Massonelec')}
 
@@ -170,11 +173,12 @@ add('index', 'Massonelec Sàrl · Électricien à Aigle · Courant fort, faible 
 ORDER = [s[0] for s in SERVICES]
 TITLES = {s[0]: s[1] for s in SERVICES}
 
-def service(slug, h1, lead, hero, hero_alt, intro_label, intro_big, intro_p, items, row_title, rws, pair=None, call=None, faqs=None, pre='', title='', desc='', extra=''):
+def service(slug, h1, lead, hero, hero_alt, intro_label, intro_big, intro_p, items, row_title, rws, pair=None, call=None, faqs=None, pre='', title='', desc='', extra='', pre_extra=''):
     i = ORDER.index(slug); nxt = ORDER[(i + 1) % len(ORDER)]
     b = phero(f'<a href="./">Accueil</a> / <a href="prestations">Prestations</a> / {TITLES[slug]}', f'Prestation {i+1:02d} / {len(ORDER):02d}', h1,
               f'<p>{lead}</p>{btn("devis?service=" + quote(pre), "Devis gratuit")}', phero_img(hero, hero_alt))
     b += f'''<section class="sec tb"><div class="wrap"><div class="grid">{label('01', intro_label)}<div class="body"><p class="big" data-r>{intro_big}</p>{''.join(f'<p data-r>{x}</p>' for x in intro_p)}{ulist(items)}</div></div></div></section>'''
+    b += pre_extra
     b += f'<section class="sec" style="padding-top:0"><div class="wrap">{sec_top("02", row_title[0], row_title[1], h2cls="d3")}{rows(rws)}</div></section>'
     if pair:
         (a, aa, ac), (bb, ba, bc) = pair
@@ -194,12 +198,13 @@ service('electricite-generale', ['Électricité', 'générale.'],
     'Approche', 'Avant toute intervention, nous prenons rendez-vous pour comprendre vos besoins et ceux de votre bâtiment. Puis nous étudions, chiffrons, réalisons et contrôlons.',
     ['Nos installateurs-électriciens se chargent de tout, du tableau jusqu’au dernier point lumineux. Vous gardez un seul interlocuteur pour l’ensemble de votre réseau électrique.'],
     ['Installations complètes, villas et immeubles', 'Rénovation d’installations anciennes', 'Tableaux de distribution, coffrets de comptage', 'Cuisines, salles de bain, éclairage encastré', 'Installations extérieures et de jardin', 'Retouches OIBT, mises en conformité'],
-    ('Sécurité', 'Des installations contrôlées et documentées.'),
+    ('Sécurité', 'Contrôles, retouches, rénovation.'),
     [('Contrôle OIBT', 'Nos installations sont contrôlées conformément à l’art. 31 de l’ordonnance fédérale sur les installations électriques à basse tension.'),
      ('Rapport de sécurité', 'Nous délivrons un rapport de conformité au propriétaire de la construction et au fournisseur d’énergie.'),
      ('Retouches', 'Correction des défauts relevés lors d’un contrôle périodique ou d’une vente immobilière.'),
      ('Rénovation', 'Mise à niveau des installations anciennes : protections, différentiels, mise à terre, tableaux.')],
     pair=(('salle-de-bain-baignoire', 'Salle de bain rénovée', 'Salle de bain · rénovation'), ('coffrets-comptage', 'Coffrets de comptage', 'Coffrets de comptage · immeuble')),
+    pre_extra=cert_block('—', 'Contrôlé selon l’OIBT, documenté.', dark=True),
     call=('miroir-retroeclaire', 'Sur mesure', 'Miroir à éclairage périphérique', 'Fabrication et réalisation d’un miroir avec éclairage périphérique au travers du verre.', [('Type', 'Fabrication sur mesure'), ('Pièce', 'Salle de bain')], 'realisations#miroir'),
     faqs=[FAQ[1], FAQ[3], ('Pouvez-vous rénover une installation ancienne sans tout refaire ?', 'Oui. Après un relevé de l’existant, nous proposons la solution adaptée : remplacement du tableau, ajout de protections différentielles, reprise des circuits défectueux ou rénovation complète.')],
     pre='Électricité générale', title='Électricité générale à Aigle · Installation & rénovation · Massonelec',
@@ -375,10 +380,10 @@ ent = phero('<a href="./">Accueil</a> / Entreprise', 'Depuis 2000', ['L’entrep
 ent += f'''<section class="sec tb"><div class="wrap"><div class="grid">{label('01', 'Histoire')}<div class="body"><p class="big" data-r>Installateur-électricien de profession et titulaire d’un CFC, {CO['boss']} a toujours souhaité devenir indépendant. En 2000, il fonde sa propre société à Aigle : Massonelec Sàrl.</p>
 <p data-r>Depuis, l’entreprise est devenue l’un des spécialistes de l’électricité générale d’Aigle et du Chablais vaudois. Elle intervient sur tous les types d’installations, de la basse tension au courant fort, auprès des particuliers, des entreprises et des industries, jusqu’à Bulle.</p>
 <p data-r>Avec Massonelec, vous choisissez la confiance et la rapidité : nos installateurs-électriciens se chargent de tout, de l’étude de vos besoins à la conception de l’installation intérieure et extérieure, jusqu’au dépannage.</p></div></div></div></section>
-<section class="sec-s"><div class="wrap"><div class="pair"><div class="a">{frame('coffrets-comptage', 'Coffrets de comptage câblés', 'r-43')}<div class="cap"><span>Coffrets de comptage · immeuble</span></div></div><div class="b">{frame('tableau-distribution', 'Tableau de distribution', 'r-34')}<div class="cap"><span>Tableau de distribution</span></div></div></div></div></section>
-<section class="sec"><div class="wrap">{sec_top('02', 'Engagements', 'Ce qui guide chaque intervention.', h2cls='d3')}
+''' + cert_block('02', 'Les qualifications de Massonelec.', dark=True) + f'''<section class="sec-s"><div class="wrap"><div class="pair"><div class="a">{frame('coffrets-comptage', 'Coffrets de comptage câblés', 'r-43')}<div class="cap"><span>Coffrets de comptage · immeuble</span></div></div><div class="b">{frame('tableau-distribution', 'Tableau de distribution', 'r-34')}<div class="cap"><span>Tableau de distribution</span></div></div></div></div></section>
+<section class="sec"><div class="wrap">{sec_top('03', 'Engagements', 'Ce qui guide chaque intervention.', h2cls='d3')}
 {rows([('Conscience professionnelle', 'Nous mettons un point d’honneur à fournir un travail de qualité irréprochable, contrôlé selon l’OIBT.'), ('Un seul interlocuteur', 'De l’étude au dépannage, vous traitez avec la même entreprise pour tout votre réseau électrique.'), ('Rapidité', 'Dépannage 24 h/24 et 7 j/7 dans tout le Chablais vaudois.'), ('Ingéniosité', 'Nous concevons des outils et des objets jusqu’alors inexistants sur le marché.'), ('Transparence', 'Devis gratuit et sans engagement, rapport de conformité remis après les travaux.')])}</div></section>
-<section class="sec dark" data-dark><div class="wrap"><div class="grid" style="row-gap:40px"><div style="grid-column:1/6">{label('03', 'Fiche')}<h2 class="d3" data-words style="margin-top:26px">Massonelec Sàrl en bref.</h2></div><div style="grid-column:7/13" data-r>{spec([('Raison sociale', 'Massonelec Sàrl'), ('Gérant', CO['boss']), ('Numéro IDE', CO['ide']), ('Siège', f"{CO['street']}, {CO['npa']} {CO['city']} (VD)"), ('Fondation', '2000'), ('Qualification', 'Installateur-électricien CFC'), ('Langues', 'Français, italien'), ('Paiement', 'Facture, Visa, Mastercard, Amex, Maestro, PostFinance')])}</div></div></div></section>'''
+<section class="sec dark" data-dark><div class="wrap"><div class="grid" style="row-gap:40px"><div style="grid-column:1/6">{label('04', 'Fiche')}<h2 class="d3" data-words style="margin-top:26px">Massonelec Sàrl en bref.</h2></div><div style="grid-column:7/13" data-r>{spec([('Raison sociale', 'Massonelec Sàrl'), ('Gérant', CO['boss']), ('Numéro IDE', CO['ide']), ('Siège', f"{CO['street']}, {CO['npa']} {CO['city']} (VD)"), ('Fondation', '2000'), ('Qualification', 'Installateur-électricien CFC'), ('Contrôles', 'OIBT art. 31 · rapport de sécurité'), ('Langues', 'Français, italien'), ('Paiement', 'Facture, Visa, Mastercard, Amex, Maestro, PostFinance')])}</div></div></div></section>'''
 ent += next_link('realisations', 'Nos réalisations', 'Voir aussi')
 ent += contact_block(subject='Demande depuis la page Entreprise', idp='ent')
 add('entreprise', 'L’entreprise · Massonelec Sàrl, électricien à Aigle depuis 2000',

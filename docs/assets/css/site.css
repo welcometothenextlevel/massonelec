@@ -752,3 +752,30 @@ p{margin:0 0 1em}
 }
 .cartouche{bottom:150px}
 .cartouche{bottom:172px}
+
+/* certifications */
+.cert-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cert{position:relative;padding:30px 26px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;transition:background .4s}
+.cert:hover{background:rgba(0,164,216,.05)}
+.cert .seal{width:74px;height:74px;color:var(--blue);margin-bottom:28px;transition:transform 1.2s var(--ease)}
+.cert:hover .seal{transform:rotate(-12deg)}
+.cert .mono{color:var(--mute);margin-bottom:10px}
+.cert h3{font-size:clamp(1.3rem,1.7vw,1.7rem);letter-spacing:-.035em;line-height:1.05;margin-bottom:14px}
+.cert p{color:var(--ink-3);font-size:.94rem;margin:0}
+.dark .cert-grid,.dark .cert{border-color:var(--line-d)}
+.dark .cert p{color:#b5b6b9}
+.dark .cert .mono{color:#8d8f93}
+.dark .cert .seal{color:#5fd0f5}
+.cert-note{margin-top:18px;color:var(--mute)}
+.dark .cert-note{color:#8d8f93}
+.cert-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.cert-badges a{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 13px 0 5px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--line);font-size:.8rem;color:var(--ink-3);background:rgba(255,255,255,.55);transition:box-shadow .3s,color .3s}
+.cert-badges a:hover{box-shadow:inset 0 0 0 1px var(--blue);color:var(--ink)}
+.cert-badges b{font-family:var(--mono);font-weight:500;font-size:.68rem;color:#fff;background:var(--blue);border-radius:99px;padding:4px 8px}
+.ftr-certs{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:clamp(50px,6vw,80px);padding:20px 0;border-top:1px solid var(--line-d);font-size:.85rem;color:#b5b6b9}
+.ftr-certs b{font-family:var(--mono);font-weight:500;font-size:.68rem;color:var(--blue);margin-right:6px}
+.ftr-certs+.ftr-bot{margin-top:0}
+@media (max-width:1100px){.cert-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.cert-grid{grid-template-columns:1fr}.cert{padding:26px 20px}.cert .seal{width:60px;height:60px;margin-bottom:20px}}
+.hero-foot .cert-badges{margin:0 0 22px}
+.cartouche{bottom:40px;right:calc(var(--pad) + 190px)}

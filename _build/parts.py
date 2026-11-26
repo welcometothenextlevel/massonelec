@@ -6,7 +6,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = json.load(open(os.path.join(ROOT, '_build', 'imgmeta.json')))
 META['scanner-poster'] = [1600, 900]
-V = '41'
+V = '52'
 
 CO = dict(
     name='Massonelec Sàrl', phone='079 350 55 19', tel='+41793505519', wa='41793505519',
@@ -160,6 +160,7 @@ def footer():
       <div class="ftr-hours"><span>Lun–Jeu</span><span>7:30–12:00 · 13:30–17:00</span><span>Vendredi</span><span>7:30–12:00 · 13:30–16:00</span><span>Sam–Dim</span><span>Urgences uniquement</span></div>
     </div>
   </div>
+  <div class="ftr-certs"><span><b>CFC</b> Installateur-électricien</span><span><b>OIBT</b> Contrôles art. 31 (RS 734.27)</span><span><b>RaSi</b> Rapport de sécurité remis</span><span><b>RC VD</b> IDE {CO['ide']}</span></div>
   <div class="ftr-bot"><span>© <span data-year>2026</span> {CO['name']}</span><span>IDE {CO['ide']}</span><span>46.3087° N · 6.9658° E</span>
     <span class="r"><a href="mentions-legales">Mentions légales</a><a href="confidentialite">Protection des données</a></span></div>
 </div></footer>'''
@@ -226,6 +227,31 @@ def rows(items):
         if isinstance(d, str): body = f'<p>{d}</p>'
         out += f'<div class="row" data-r><span class="mono">{i+1:02d}</span><h3>{t}</h3><div>{body}</div></div>'
     return out + '</div>'
+
+
+CERTS = [
+    ('CFC', 'Installateur-électricien CFC', 'Le gérant, Jean-Gilbert Masson, est titulaire du certificat fédéral de capacité d’installateur-électricien.', 'Formation professionnelle fédérale'),
+    ('OIBT', 'Contrôle OIBT, art. 31', 'Chaque installation est contrôlée conformément à l’ordonnance fédérale sur les installations électriques à basse tension.', 'RS 734.27 · art. 31'),
+    ('RaSi', 'Rapport de sécurité', 'Après les travaux, le rapport de conformité est remis au propriétaire et au fournisseur d’énergie.', 'Remis à chaque chantier'),
+    ('RC', 'Entreprise inscrite', 'Massonelec Sàrl est inscrite au registre du commerce du canton de Vaud, siège à Aigle.', 'IDE CHE-101.430.065'),
+]
+
+def seal(code):
+    return (f'<svg class="seal" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+            f'<circle cx="32" cy="32" r="24.5" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="2 2.6"/>'
+            f'<text x="32" y="36.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="{13 if len(code) <= 3 else 11}" font-weight="500" fill="currentColor">{code}</text></svg>')
+
+def cert_block(num='—', title='Qualifié, contrôlé, documenté.', dark=False, side=''):
+    side = side or 'Les garanties d’un installateur-électricien suisse, vérifiables : qualification fédérale, contrôle selon l’OIBT et rapport de sécurité remis après chaque installation.'
+    cards = ''.join(f'''<article class="cert" data-r="{i * .08:.2f}">{seal(code)}<span class="mono">{ref}</span><h3>{t}</h3><p>{d}</p></article>''' for i, (code, t, d, ref) in enumerate(CERTS))
+    return f'''<section class="sec certs{" dark" if dark else ""}"{" data-dark" if dark else ""} id="certifications"><div class="wrap">
+  {sec_top(num, 'Certifications & conformité', title, side=side)}
+  <div class="cert-grid">{cards}</div>
+  <p class="cert-note mono">OIBT : ordonnance fédérale sur les installations électriques à basse tension (RS 734.27). CFC : certificat fédéral de capacité.</p>
+</div></section>'''
+
+def cert_badges():
+    return '<div class="cert-badges" data-r=".2"><a href="entreprise#certifications"><b>CFC</b> Installateur-électricien</a><a href="electricite-generale#certifications"><b>OIBT</b> Contrôle art. 31</a><a href="electricite-generale#certifications"><b>RaSi</b> Rapport de sécurité</a></div>'
 
 def faq(items):
     det = ''.join(f'<details><summary>{q}<i></i></summary><div class="ans">{a}</div></details>' for q, a in items)
