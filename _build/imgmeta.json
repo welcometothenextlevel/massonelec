@@ -1,0 +1,138 @@
+{
+"tableau-domotique": [
+909,
+512
+],
+"tableau-distribution": [
+484,
+645
+],
+"plafond-led-violet": [
+1920,
+1443
+],
+"enseigne-led-gravee": [
+1920,
+1919
+],
+"plafond-led-blanc": [
+1920,
+1440
+],
+"bibliotheque-led": [
+1079,
+809
+],
+"vitrine-led": [
+1920,
+1443
+],
+"coffrets-comptage": [
+1920,
+1916
+],
+"armoire-industrielle": [
+1920,
+1916
+],
+"salle-de-bain-baignoire": [
+1920,
+1916
+],
+"salle-de-bain-wc": [
+1920,
+1916
+],
+"miroir-retroeclaire": [
+1920,
+1916
+],
+"baie-reseau": [
+1054,
+593
+],
+"proto-usinage": [
+576,
+574
+],
+"proto-chassis-levage": [
+1024,
+768
+],
+"proto-lift-projecteur": [
+1024,
+768
+],
+"proto-moteur": [
+576,
+574
+],
+"proto-moteur-grave": [
+1024,
+768
+],
+"plan-electrique-1": [
+1024,
+723
+],
+"schema-unifilaire": [
+1024,
+699
+],
+"plan-electrique-2": [
+1024,
+723
+],
+"plan-electrique-3": [
+807,
+570
+],
+"salon-eclairage": [
+550,
+413
+],
+"moteur-industriel": [
+550,
+413
+],
+"miroir-led": [
+576,
+768
+],
+"plafond-led-chantier": [
+550,
+413
+],
+"cablage-armoire": [
+576,
+768
+],
+"projecteur-led": [
+550,
+413
+],
+"station-pompage-armoire": [
+870,
+1157
+],
+"station-pompage-salle": [
+882,
+1157
+],
+"imagerie-transformateur": [
+882,
+1157
+],
+"generatrice-88kva": [
+410,
+538
+],
+"eclairage-jardin": [
+560,
+555
+],
+"piece-impression-3d": [
+315,
+526
+]
+}
